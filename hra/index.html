@@ -1,7 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head></head>
+    <head>
+        <!-- You also can use a "current" version (e.g: harmony-current.min.js) instead of a specific version -->
+        <script src="https://protect-eu.mimecast.com/s/h4YJC4x0qcRg7VQIOb8Pu?domain=common.mastersoftgroup.com" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="https://protect-eu.mimecast.com/s/hRbJC5yGrhwEWJQTO0pwL?domain=common.mastersoftgroup.com">
+    </head>
     <body>
         <h1>Hello HRA!</h1>
+        <h2>Address</h2>
+        <div>
+            <select id="country">
+                <option value="au">Australia</option>
+                <option value="nz">New Zealand</option>
+                <option value="gb">United Kingdom</option>
+                <option value="us">United States</option>
+                <option value="ca">Canada</option>
+            </select>
+            
+            <input type="text" id="address" size="40" placeholder="Type in address here" />
+            <div id="error"></div>
+            <br />
+            <div><input id="HRA_Attributes_Line1" name="HRA_Attributes_Line1" placeholder="Address Line1" size="40" type="text"/></div>
+            <div><input id="HRA_Attributes_Line2" name="HRA_Attributes_Line2" placeholder="Address Line2" size="40" type="text"/></div>
+            <div><input id="HRA_Attributes_Line3" name="HRA_Attributes_Line3" placeholder="Address Line3" size="40" type="text"/></div>
+            <div><input id="HRA_POSTCODE" name="HRA_POSTCODE" placeholder="Postcode" size="40" type="text"/></div>
+            <div><input id="HRA_STREET" name="HRA_STREET" placeholder="Street" size="40" type="text"/></div>
+            <div><input id="HRA_BUILDING_NAME" name="HRA_BUILDING_NAME" placeholder="Building Name" size="40" type="text"/></div>
+            <div><input id="HRA_CITY" name="HRA_CITY" placeholder="City" size="40" type="text"/></div>
+            <div><input id="HRA_PROVINCE" name="HRA_PROVINCE" placeholder="Province" size="40" type="text"/></div>
+            <div><input id="HRA_STATE" name="HRA_STATE" placeholder="State" size="40" type="text"/></div>
+            <div><input id="HRA_LOT_NUMBER" name="HRA_LOT_NUMBER" placeholder=" Lot Number" size="40" type="text"/></div>
+            <div><input id="HRA_FLOOR_LEVEL_NUMBER" name="HRA_FLOOR_LEVEL_NUMBER" placeholder=" Floor/Level Number" size="40" type="text"/></div>
+            <div><input id="HRA_LOCALITY" name="HRA_LOCALITY" placeholder="Locality" size="40" type="text"/></div>
+            
+            <script>
+                var input = document.getElementById("address");
+                var country = document.getElementById("country");
+                // Use the environment based on the site it is on
+                Harmony.useEnv("https://protect-eu.mimecast.com/s/fv_9C68JvTZzGNAfmepVe?domain=preview-hosted.mastersoftgroup.com");
+
+                // Init the client with the demo api user name and credential
+                // We have created the following user and credential which you can use on {{domain}}
+                Harmony.init("GBGpl63476", "MfrArREWRxGVHwxWKiuJMExUmq9glHkW", Harmony.AUSTRALIA);
+                //exposeattributes
+                Harmony.useFeatureOptions({"exposeAttributes":1, "groupAddresses":1});
+                
+                HarmonyJS.addField("attributes.Line1", document.getElementById("HRA_Attributes_Line1"));
+                HarmonyJS.addField("attributes.Line2", document.getElementById("HRA_Attributes_Line2"));
+                HarmonyJS.addField("attributes.Line3", document.getElementById("HRA_Attributes_Line3"));
+                HarmonyJS.addField(Harmony.POSTCODE, document.getElementById("HRA_POSTCODE"));
+                HarmonyJS.addField(Harmony.STREET, document.getElementById("HRA_STREET"));
+                HarmonyJS.addField(Harmony.BUILDING_NAME, document.getElementById("HRA_BUILDING_NAME"));
+                HarmonyJS.addField(Harmony.CITY, document.getElementById("HRA_CITY"));
+                HarmonyJS.addField(Harmony.PROVINCE, document.getElementById("HRA_PROVINCE"));
+                HarmonyJS.addField(Harmony.STATE, document.getElementById("HRA_STATE"));
+                HarmonyJS.addField(Harmony.LOT_NUMBER, document.getElementById("HRA_LOT_NUMBER"));
+                HarmonyJS.addField(Harmony.FLOOR_LEVEL_NUMBER, document.getElementById("HRA_FLOOR_LEVEL_NUMBER"));
+                HarmonyJS.addField(Harmony.LOCALITY, document.getElementById("HRA_LOCALITY"));
+
+                    
+                var opt = {
+                // min 3 chars to trigger the lookup
+                minLength:3, 
+                // enable getGeocode for non ANZ countries when address selected.
+                getIntlGeocode:true,
+                
+                // override onSelect function if applicable (optional)
+                onSelect: function(event, ui) {
+                    //https://protect-eu.mimecast.com/s/pGYiC73KwtnlWgxCNzEDa('address selected: ' + JSON.stringify(ui));
+                    //console.log('address selected: ' + JSON.stringify(ui));
+                },
+                
+                // override onGeocode function if applicable (optional)
+                onIntlGeocode: function(event, ui) {
+                    // console.log('geocode address selected: ' + JSON.stringify(ui.onIntlGeocodeItem));
+                },
+                
+                // override onRetrieve function if applicable (optional)
+                onRetrieve: function(event, ui) {
+                    // console.log('onRetrieve geocode address selected: ' + JSON.stringify(ui.onRetrieveItem));
+                }
+                };
+            
+                // Configure the address lookup. 
+                var al = HarmonyJS.addressLookup(input, country, null, opt);
+
+            </script>            
+        </div>
     </body>
 </html>
